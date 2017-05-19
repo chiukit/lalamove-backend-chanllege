@@ -1,0 +1,14 @@
+version: "2"
+services:
+  api:
+    build: .
+    ports:
+     - "3000:3000"
+    links:
+     - redis
+  redis:
+    image: redis
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379"
