@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -33,6 +34,18 @@ func CreateRoute(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		sendErr(res, http.StatusBadRequest, err)
 		return
+	}
+
+	if len(path) == 0 {
+		sendErr(res, http.StatusBadRequest, errors.New("Path cannot be empty"))
+		return
+	}
+
+	for i, p := range path {
+		if len(p) != 2 {
+			sendErr(res, http.StatusBadRequest, fmt.Errorf("Path %v is invalid", i))
+			return
+		}
 	}
 
 	record := Record{
